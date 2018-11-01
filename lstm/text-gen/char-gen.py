@@ -50,10 +50,9 @@ for i, sentence in enumerate(sentences):
     y[i, char_indices[next_chars[i]]] = 1
 
 model = Sequential()
-model.add(GRU(128, input_shape=(config.maxlen, len(chars))))
+model.add(GRU(config.hidden_nodes, input_shape=(config.maxlen, len(chars))))
 model.add(Dense(len(chars), activation='softmax'))
 model.compile(loss='categorical_crossentropy', optimizer="rmsprop")
-
 
 def sample(preds, temperature=1.0):
     # helper function to sample an index from a probability array
