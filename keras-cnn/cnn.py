@@ -34,17 +34,21 @@ num_classes = y_test.shape[1]
 labels=range(10)
 
 # build model
-model = Sequential()
-model.add(Conv2D(32,
-    (config.first_layer_conv_width, config.first_layer_conv_height),
-    input_shape=(28, 28,1),
-    activation='relu'))
-model.add(MaxPooling2D(pool_size=(2, 2)))
-model.add(Flatten())
-model.add(Dense(config.dense_layer_size, activation='relu'))
-model.add(Dense(num_classes, activation='softmax'))
-
-model.compile(loss='categorical_crossentropy', optimizer='adam',
+model=Sequential()
+model.add(Reshape((28,28,1), input_shape=(28,28)))
+model.add(Conv2D(32, (3,3), padding='same', activation='relu'))
+model.add(MaxPooling2D())
+model.add(Conv2D(64, (3,3), padding='same', activation='relu'))
+model.add(MaxPooling2D())
+model.add(Conv2D(128, (3,3), padding='same', activation='relu'))
+model.add(MaxPooling2D())
+model.add(Dropout(0.4))
+model.add(Flatten(input_shape=(img_width, img_height)))
+model.add(Dropout(0.4))
+model.add(Dense(20, activation='relu'))
+model.add(Dropout(0.4))
+model.add(Dense(num_classes, activation="softmax"))
+model.compile(loss=config.loss, optimizer=config.optimizer,
                 metrics=['accuracy'])
 
 
